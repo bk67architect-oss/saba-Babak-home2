@@ -1,36 +1,19 @@
-name: Build Android APK
+name: saba_babak_home
+description: "خانه صبا و بابک"
+publish_to: 'none'
+version: 1.0.0+1
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+environment:
+  sdk: '>=3.10.0 <4.0.0'
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+dependencies:
+  flutter:
+    sdk: flutter
+  image_picker: ^1.2.3
+  path: ^1.9.1
+  path_provider: ^2.1.6
+  shamsi_date: ^1.1.1
+  sqflite: ^2.4.2+1
 
-    steps:
-      - name: Get project files
-        uses: actions/checkout@v4
-
-      - name: Install Flutter on GitHub runner
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-
-      - name: Generate Android project
-        run: flutter create --platforms=android --org com.sabababak --project-name saba_babak_home .
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Build APK
-        run: flutter build apk --debug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: saba-babak-home-apk
-          path: build/app/outputs/flutter-apk/app-debug.apk
+flutter:
+  uses-material-design: true
