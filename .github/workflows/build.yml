@@ -1,0 +1,36 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get project files
+        uses: actions/checkout@v4
+
+      - name: Install Flutter on GitHub runner
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Generate Android project
+        run: flutter create --platforms=android --org com.sabababak --project-name saba_babak_home .
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: saba-babak-home-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
